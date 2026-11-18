@@ -1,0 +1,3 @@
+---
+bind_views_zone_dir: /var/named/zones
+bind_views_hint_file: named.ca

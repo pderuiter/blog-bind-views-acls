@@ -1,0 +1,24 @@
+---
+# acl "trusted": clients that get the internal view (and recursion)
+bind_views_trusted:
+  - localhost
+  - localnets
+  - 192.168.0.0/16
+  - 10.0.0.0/8
+# acl "secondary-ns"
+bind_views_secondary_ns:
+  - 192.168.1.10
+  - 192.168.1.11
+
+# Zone transfers need this key (secret from ansible-vault)
+bind_views_transfer_key: transfer-key
+bind_views_transfer_algorithm: hmac-sha256
+bind_views_transfer_secret: ""
+
+bind_views_rrl_responses_per_second: 10
+bind_views_rrl_window: 15
+bind_views_rrl_slip: 2
+
+bind_views_zone: example.com
+bind_views_zone_serial: 2024010101
+bind_views_log_dir: /var/log/named

@@ -1,0 +1,6 @@
+// {{ ansible_managed }}
+include "{{ bind_options_conf }}";
+include "{{ bind_local_conf }}";
+{% if bind_default_zones %}
+include "/etc/bind/named.conf.default-zones";
+{% endif %}

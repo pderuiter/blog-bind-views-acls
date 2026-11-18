@@ -1,0 +1,25 @@
+---
+bind_packages:
+  - bind
+  - bind-utils
+bind_service: named
+bind_user: named
+bind_group: named
+bind_conf_dir: /etc/named
+bind_main_conf: /etc/named.conf
+bind_options_conf: /etc/named/named.conf.options
+bind_local_conf: /etc/named/named.conf.local
+bind_directory: /var/named
+bind_state_dir: /var/named
+bind_keys_dir: /etc/named/keys
+bind_rndc_conf: /etc/rndc.conf
+bind_rndc_key: /etc/rndc.key
+bind_dump_file: /var/named/data/cache_dump.db
+# Lines the options block needs on this platform (from the stock RHEL named.conf)
+bind_platform_options:
+  - pid-file "/run/named/named.pid";
+  - session-keyfile "/run/named/session.key";
+  - managed-keys-directory "/var/named/dynamic";
+  - dump-file "/var/named/data/cache_dump.db";
+  - statistics-file "/var/named/data/named_stats.txt";
+  - include "/etc/crypto-policies/back-ends/bind.config";

@@ -1,0 +1,12 @@
+---
+# Extra packages on top of the distribution's BIND packages
+bind_extra_packages: []
+
+# Include the distribution's default zones (localhost, root hints, ...).
+# Configurations that use views must set this to false: with views, every
+# zone has to live inside a view.
+bind_default_zones: true
+
+# Root hints file used by the "." hint zone on RHEL (Debian keeps its own
+# named.conf.default-zones). Relative to the BIND working directory.
+bind_redhat_hint_file: named.ca

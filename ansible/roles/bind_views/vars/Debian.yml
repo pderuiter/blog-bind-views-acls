@@ -1,0 +1,3 @@
+---
+bind_views_zone_dir: /var/lib/bind/zones
+bind_views_hint_file: /usr/share/dns/root.hints

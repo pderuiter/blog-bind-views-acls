@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: bind
+  namespace: pderuiter
+  author: Patrick de Ruiter
+  description: Install BIND 9 and lay out named.conf so the post-specific roles can drop in options and zones
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: EL
+      versions:
+        - "9"
+  galaxy_tags:
+    - dns
+    - bind
+
+dependencies: []

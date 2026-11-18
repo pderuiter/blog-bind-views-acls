@@ -1,0 +1,17 @@
+---
+# ACLs from the post's complete configuration example
+bind_views_trusted:
+  - localhost
+  - localnets
+  - 192.168.0.0/16
+  - 10.0.0.0/8
+bind_views_secondary_ns:
+  - 192.168.1.10
+  - 192.168.1.11
+
+bind_views_transfer_key: transfer-key
+bind_views_transfer_secret: "{{ vault_bind_views_transfer_secret }}"
+
+bind_views_rrl_responses_per_second: 10
+bind_views_rrl_window: 15
+bind_views_rrl_slip: 2

@@ -1,0 +1,31 @@
+// {{ ansible_managed }}
+view "internal" {
+    match-clients { trusted; };
+
+    recursion yes;
+    allow-recursion { trusted; };
+
+    zone "{{ bind_views_zone }}" {
+        type primary;
+        file "{{ bind_views_zone_dir }}/internal/{{ bind_views_zone }}.zone";
+        allow-transfer { key "{{ bind_views_transfer_key }}"; };
+    };
+
+    zone "." {
+        type hint;
+        file "{{ bind_views_hint_file }}";
+    };
+};
+
+view "external" {
+    match-clients { any; };
+
+    recursion no;
+
+    zone "{{ bind_views_zone }}" {
+        type primary;
+        file "{{ bind_views_zone_dir }}/external/{{ bind_views_zone }}.zone";
+        allow-transfer { key "{{ bind_views_transfer_key }}"; };
+        allow-query { any; };
+    };
+};

@@ -1,0 +1,20 @@
+---
+bind_packages:
+  - bind9
+  - bind9utils
+  - dnsutils
+bind_service: named
+bind_user: bind
+bind_group: bind
+bind_conf_dir: /etc/bind
+bind_main_conf: /etc/bind/named.conf
+bind_options_conf: /etc/bind/named.conf.options
+bind_local_conf: /etc/bind/named.conf.local
+bind_directory: /var/cache/bind
+bind_state_dir: /var/lib/bind
+bind_keys_dir: /etc/bind/keys
+bind_rndc_conf: /etc/bind/rndc.conf
+bind_rndc_key: /etc/bind/rndc.key
+bind_dump_file: /var/cache/bind/named_dump.db
+# Lines the options block needs on this platform (none on Debian/Ubuntu)
+bind_platform_options: []

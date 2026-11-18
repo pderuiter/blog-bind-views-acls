@@ -1,0 +1,70 @@
+// {{ ansible_managed }}
+acl "trusted" {
+{% for n in bind_views_trusted %}
+    {{ n }};
+{% endfor %}
+};
+
+acl "secondary-ns" {
+{% for n in bind_views_secondary_ns %}
+    {{ n }};
+{% endfor %}
+};
+
+include "{{ bind_keys_dir }}/{{ bind_views_transfer_key }}.key";
+
+options {
+    directory "{{ bind_directory }}";
+{% for line in bind_platform_options %}
+    {{ line }}
+{% endfor %}
+
+    // Listen configuration
+    listen-on port 53 { any; };
+    listen-on-v6 port 53 { any; };
+
+    // Security defaults
+    recursion no;           // Disabled by default
+    allow-query { any; };   // Allow queries
+    allow-transfer { none; };  // Deny transfers by default
+    allow-update { none; };    // Deny updates by default
+
+    // Version hiding
+    version "not disclosed";
+    hostname "not disclosed";
+    server-id "not disclosed";
+
+    // Response minimization
+    minimal-responses yes;
+    minimal-any yes;
+
+    // Rate limiting
+    rate-limit {
+        responses-per-second {{ bind_views_rrl_responses_per_second }};
+        window {{ bind_views_rrl_window }};
+        slip {{ bind_views_rrl_slip }};
+    };
+
+    // DNSSEC validation
+    dnssec-validation auto;
+};
+
+logging {
+    channel default_log {
+        file "{{ bind_views_log_dir }}/named.log" versions 5 size 10m;
+        severity info;
+        print-time yes;
+        print-severity yes;
+    };
+
+    channel security_log {
+        file "{{ bind_views_log_dir }}/security.log" versions 5 size 10m;
+        severity info;
+        print-time yes;
+    };
+
+    category default { default_log; };
+    category security { security_log; };
+    category xfer-in { security_log; };
+    category xfer-out { security_log; };
+};

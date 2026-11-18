@@ -1,0 +1,11 @@
+---
+- name: Validate named configuration
+  ansible.builtin.command: named-checkconf -z {{ bind_main_conf }}
+  changed_when: false
+  listen: Bind config changed
+
+- name: Restart named
+  ansible.builtin.service:
+    name: "{{ bind_service }}"
+    state: restarted
+  listen: Bind config changed

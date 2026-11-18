@@ -1,0 +1,67 @@
+---
+- name: Load distribution-specific settings
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+- name: Check that the transfer key secret is set
+  ansible.builtin.assert:
+    that: bind_views_transfer_secret | length > 0
+    fail_msg: Set bind_views_transfer_secret (from ansible-vault), see vault.yml.example.
+  no_log: true
+
+- name: Write the transfer key
+  ansible.builtin.template:
+    src: transfer.key.j2
+    dest: "{{ bind_keys_dir }}/{{ bind_views_transfer_key }}.key"
+    owner: root
+    group: "{{ bind_group }}"
+    mode: "0640"
+  no_log: true
+  notify: Bind config changed
+
+- name: Create the zone and log directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: "0755"
+  loop:
+    - "{{ bind_views_zone_dir }}/internal"
+    - "{{ bind_views_zone_dir }}/external"
+    - "{{ bind_views_log_dir }}"
+
+- name: Write the internal and external zone files
+  ansible.builtin.template:
+    src: "zones/{{ item }}.zone.j2"
+    dest: "{{ bind_views_zone_dir }}/{{ item }}/{{ bind_views_zone }}.zone"
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: "0644"
+    validate: named-checkzone {{ bind_views_zone }} %s
+  loop:
+    - internal
+    - external
+  notify: Bind config changed
+
+- name: Write ACLs, options and logging
+  ansible.builtin.template:
+    src: named.conf.options.j2
+    dest: "{{ bind_options_conf }}"
+    owner: root
+    group: "{{ bind_group }}"
+    mode: "0640"
+  notify: Bind config changed
+
+- name: Write the views
+  ansible.builtin.template:
+    src: named.conf.local.j2
+    dest: "{{ bind_local_conf }}"
+    owner: root
+    group: "{{ bind_group }}"
+    mode: "0640"
+  notify: Bind config changed
+
+- name: Start named with the new configuration
+  ansible.builtin.include_role:
+    name: bind
+    tasks_from: start

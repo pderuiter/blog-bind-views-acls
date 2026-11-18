@@ -1,0 +1,6 @@
+---
+# Copy to vault.yml, replace the secret and encrypt:
+#   cp vault.yml.example vault.yml
+#   ansible-vault encrypt group_vars/all/vault.yml
+# Generate it with: tsig-keygen -a hmac-sha256 transfer-key
+vault_bind_views_transfer_secret: "REPLACE-with-base64-secret-from-tsig-keygen"

@@ -1,0 +1,6 @@
+---
+- name: Split-horizon BIND with views and ACLs
+  hosts: dns_servers
+  gather_facts: true
+  roles:
+    - role: bind_views

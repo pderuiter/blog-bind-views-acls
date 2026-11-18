@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: bind_views
+  namespace: pderuiter
+  author: Patrick de Ruiter
+  description: Split-horizon BIND 9 with ACLs, internal and external views, TSIG transfers, rate limiting and security logging
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: EL
+      versions:
+        - "9"
+  galaxy_tags:
+    - dns
+    - bind
+
+dependencies:
+  - role: bind
+    vars:
+      # With views every zone must be inside a view: skip the default zones
+      bind_default_zones: false

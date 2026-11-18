@@ -1,0 +1,18 @@
+---
+# Included by the post roles once all configuration is in place.
+- name: Apply pending named configuration changes
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure named is running
+  ansible.builtin.service:
+    name: "{{ bind_service }}"
+    state: started
+
+# After a restart named needs a moment before rndc commands work
+- name: Wait until named answers rndc
+  ansible.builtin.command: rndc status
+  register: bind_rndc_status
+  until: bind_rndc_status.rc == 0
+  retries: 15
+  delay: 2
+  changed_when: false
